@@ -49,10 +49,7 @@ class PuppetLint::Plugins::CheckAugeas < PuppetLint::CheckPlugin
         # If we couldn't find a default lens value, check inside the resource
         # to see if one is defined there
         unless lens_found_in_defaults
-          lens_token = resource_tokens.select { |token|
-            token.type == :NAME && token.value == 'lens'
-          }.first
-          if lens_token.nil?
+          if resource_tokens.none? { |t| t.type == :NAME && t.value == 'lens' }
             notify :error, {
               :message    => 'augeas resource without a lens parameter',
               :linenumber => resource_type_token.line,
@@ -64,10 +61,7 @@ class PuppetLint::Plugins::CheckAugeas < PuppetLint::CheckPlugin
         # If we couldn't find a default incl value, check inside the resource
         # to see if one is defined there
         unless incl_found_in_defaults
-          incl_token = resource_tokens.select { |token|
-            token.type == :NAME && token.value == 'incl'
-          }.first
-          if incl_token.nil?
+          if resource_tokens.none? { |t| t.type == :NAME && t.value == 'incl' }
             notify :error, {
               :message    => 'augeas resource without an incl parameter',
               :linenumber => resource_type_token.line,
